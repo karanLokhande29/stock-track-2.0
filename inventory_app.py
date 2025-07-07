@@ -13,6 +13,12 @@ if uploaded_file:
         # 🚫 Remove Grand Total row if present
         df = df[df["Product Name"].str.lower().str.strip() != "grand total"]
 
+        # ✅ Calculate Movement Status live
+        df["Movement Status"] = df.apply(
+            lambda row: "Moved" if row["Inward Qty"] > 0 or row["Outward Qty"] > 0 else "Not Moved",
+            axis=1
+        )
+
         # === Basic Sidebar Filters ===
         st.sidebar.header("🔎 Filter Options")
         search_term = st.sidebar.text_input("🔍 Search Product Name")
